@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -12,14 +13,15 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import br.com.leeo.jtelegram.CallbackQuery;
+import br.com.leeo.jtelegram.LabeledPrice;
 import br.com.leeo.jtelegram.Update;
 import br.com.leeo.jtelegram.type.ReplyMarkup;
 import br.com.leeo.jtelegram.type.Updates;
 
 public class Main {
 
-	private static final String BOT_TOKEN = "<token>";
-	
+	private static final String BOT_TOKEN = "<TOKEN>";
+
 	public static void main(String[] args) {
 
 		Main main = new Main();
@@ -107,6 +109,30 @@ public class Main {
 			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://api.telegram.org/bot"
 					+ BOT_TOKEN + "/sendMessage?reply_markup=" + new Gson().toJson(reply_markup) + "&parse_mode="
 					+ parse_mode + "&chat_id=" + chat_id + "&text=" + URLEncoder.encode(text, "UTF-8"))
+							.openConnection();
+
+			httpsURLConnection.setRequestMethod("GET");
+			httpsURLConnection.setDoOutput(true);
+
+			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(httpsURLConnection.getOutputStream());
+			outputStreamWriter.flush();
+
+			new JsonParser().parse(new InputStreamReader(httpsURLConnection.getInputStream()));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void sendInvoice(String chat_id, String title, String description, String payload, String provider_token,
+			String start_parameter, String currency, List<LabeledPrice> prices) {
+
+		try {
+
+			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://api.telegram.org/bot"
+					+ BOT_TOKEN + "/sendInvoice" + "?chat_id=" + chat_id + "&title=" + title + "&description="
+					+ description + "&payload=" + payload + "&provider_token=" + provider_token + "&start_parameter="
+					+ start_parameter + "&currency=" + currency + "&prices=" + (new Gson().toJson(prices)))
 							.openConnection();
 
 			httpsURLConnection.setRequestMethod("GET");
