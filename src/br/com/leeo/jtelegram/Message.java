@@ -9,6 +9,8 @@ public class Message {
 	private List<MessageEntity> entities;
 	private Message reply_to_message;
 	private User from;
+	private Invoice invoice;
+	private SuccessfulPayment successful_payment;
 
 	public String getText() {
 		return text;
@@ -48,6 +50,22 @@ public class Message {
 
 	public void setFrom(User from) {
 		this.from = from;
+	}
+
+	public Invoice getInvoice() {
+		return invoice;
+	}
+
+	public void setInvoice(Invoice invoice) {
+		this.invoice = invoice;
+	}
+
+	public SuccessfulPayment getSuccessful_payment() {
+		return successful_payment;
+	}
+
+	public void setSuccessful_payment(SuccessfulPayment successful_payment) {
+		this.successful_payment = successful_payment;
 	}
 
 }
