@@ -123,7 +123,22 @@ public class Main {
 			e.printStackTrace();
 		}
 	}
+	public void sendPhoto(String chat_id, URL photo) {
 
+		try {
+
+			HttpURLConnection httpURLConnectionMontaHash = (HttpURLConnection) new URL(
+					"https://api.telegram.org/bot"
+					+ BOT_TOKEN + "/sendPhoto?chat_id=" + chat_id + "&photo="
+							+ URLEncoder.encode(photo.toString(), "UTF-8")).openConnection();
+
+			httpURLConnectionMontaHash.setRequestMethod("GET");
+			httpURLConnectionMontaHash.getResponseCode();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	public void sendInvoice(String chat_id, String title, String description, String payload, String provider_token,
 			String start_parameter, String currency, List<LabeledPrice> prices) {
 
