@@ -3,8 +3,14 @@ package br.com.leeo.jtelegram;
 public class InlineKeyboardButton {
 
 	private String text;
-	
+
 	private String callback_data;
+
+	public InlineKeyboardButton(String text, String callback_data) {
+
+		this.text = text;
+		this.callback_data = callback_data;
+	}
 
 	public String getText() {
 		return text;
