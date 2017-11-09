@@ -15,14 +15,20 @@ import br.com.leeo.jtelegram.CallbackQuery;
 import br.com.leeo.jtelegram.LabeledPrice;
 import br.com.leeo.jtelegram.PreCheckoutQuery;
 import br.com.leeo.jtelegram.Update;
-import br.com.leeo.jtelegram.type.ReplyMarkup;
-import br.com.leeo.jtelegram.type.Updates;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 public abstract class JTelegram {
+
+	public enum ParseMode {
+		Markdown, HTML;
+	}
+	
+	public enum Currency {
+		BRL;
+	}
 
 	private long offset = 0;
 	private final String BOT_TOKEN;
@@ -104,7 +110,7 @@ public abstract class JTelegram {
 	 * @throws MalformedURLException
 	 * 
 	 */
-	public void sendMessage(String chat_id, String text, String parse_mode, ReplyMarkup reply_markup) throws Exception {
+	public void sendMessage(String chat_id, String text, ParseMode parse_mode, ReplyMarkup reply_markup) throws Exception {
 
 		HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://api.telegram.org/bot" + BOT_TOKEN
 				+ "/sendMessage?reply_markup=" + URLEncoder.encode(new Gson().toJson(reply_markup), "UTF-8") + "&parse_mode=" + parse_mode
@@ -125,11 +131,10 @@ public abstract class JTelegram {
 		httpsURLConnection.getResponseCode();
 	}
 
-	public void answerPreCheckoutQuery(PreCheckoutQuery pre_checkout_query, Boolean ok, String error_message) throws Exception {
+	public void answerPreCheckoutQuery(PreCheckoutQuery pre_checkout_query, Boolean ok) throws Exception {
 
 		HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://api.telegram.org/bot" + BOT_TOKEN
-				+ "/answerPreCheckoutQuery?pre_checkout_query_id=" + pre_checkout_query.getId() + "&ok=" + ok.booleanValue() + "&error_message="
-				+ URLEncoder.encode(error_message, "UTF-8")).openConnection();
+				+ "/answerPreCheckoutQuery?pre_checkout_query_id=" + pre_checkout_query.getId() + "&ok=" + ok.booleanValue()).openConnection();
 
 		httpsURLConnection.setRequestMethod("GET");
 
@@ -137,7 +142,7 @@ public abstract class JTelegram {
 	}
 
 	public void sendInvoice(String chat_id, String title, String description, String payload, String provider_token, String start_parameter,
-			String currency, List<LabeledPrice> prices, URL photo_url) throws Exception {
+			Currency currency, List<LabeledPrice> prices, URL photo_url) throws Exception {
 
 		HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://api.telegram.org/bot" + BOT_TOKEN + "/sendInvoice"
 				+ "?chat_id=" + chat_id + "&title=" + title + "&photo_url=" + URLEncoder.encode(photo_url.toString(), "UTF-8") + "&description="
