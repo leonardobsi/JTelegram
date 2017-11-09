@@ -4,7 +4,7 @@ import br.com.leeo.jtelegram.type.ReplyMarkup;
 
 public class ForceReply extends ReplyMarkup{
 
-	private boolean force_reply= true;
+	private boolean force_reply= false;
 
 	public boolean isForce_reply() {
 		return force_reply;

@@ -5,6 +5,11 @@ public class LabeledPrice {
 	private String label;
 	private int amount;
 
+	public LabeledPrice(String label, int amount) {
+		this.label = label;
+		this.amount = amount;
+	}
+
 	public String getLabel() {
 		return label;
 	}
