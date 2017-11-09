@@ -11,6 +11,8 @@ public class Message {
 	private User from;
 	private Invoice invoice;
 	private SuccessfulPayment successful_payment;
+	private Location location;
+	private Contact contact;
 
 	public String getText() {
 		return text;
@@ -66,6 +68,22 @@ public class Message {
 
 	public void setSuccessful_payment(SuccessfulPayment successful_payment) {
 		this.successful_payment = successful_payment;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	public Contact getContact() {
+		return contact;
+	}
+
+	public void setContact(Contact contact) {
+		this.contact = contact;
 	}
 
 }
