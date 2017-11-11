@@ -1,6 +1,6 @@
 package br.com.leeo.jtelegram;
 
-import br.com.leeo.jtelegram.type.ReplyMarkup;
+import br.com.leeo.ReplyMarkup;
 
 public class ForceReply extends ReplyMarkup{
 

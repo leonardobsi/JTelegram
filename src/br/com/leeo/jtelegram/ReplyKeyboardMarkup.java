@@ -3,7 +3,7 @@ package br.com.leeo.jtelegram;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.leeo.jtelegram.type.ReplyMarkup;
+import br.com.leeo.ReplyMarkup;
 
 public class ReplyKeyboardMarkup extends ReplyMarkup {
 
