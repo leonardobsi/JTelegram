@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Message {
 
+	private Integer message_id;
 	private String text;
 	private Chat chat;
 	private List<MessageEntity> entities;
@@ -13,6 +14,14 @@ public class Message {
 	private SuccessfulPayment successful_payment;
 	private Location location;
 	private Contact contact;
+
+	public Integer getMessage_id() {
+		return message_id;
+	}
+
+	public void setMessage_id(Integer message_id) {
+		this.message_id = message_id;
+	}
 
 	public String getText() {
 		return text;
