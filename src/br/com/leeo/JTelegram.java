@@ -77,6 +77,26 @@ public abstract class JTelegram {
 		}
 	}
 
+	public void editMessageText(CallbackQuery callbackQuery, String text, ParseMode parse_mode,
+			ReplyMarkup reply_markup) {
+
+		try {
+
+			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://api.telegram.org/bot"
+					+ BOT_TOKEN + "/editMessageText?chat_id=" + callbackQuery.getMessage().getChat().getId()
+					+ "&message_id=" + callbackQuery.getMessage().getMessage_id() + "&text="
+					+ URLEncoder.encode(text, "UTF-8") + "&parse_mode=" + parse_mode + "&reply_markup="
+					+ URLEncoder.encode(new Gson().toJson(reply_markup), "UTF-8")).openConnection();
+
+			httpsURLConnection.setRequestMethod("GET");
+
+			httpsURLConnection.getResponseCode();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void answerCallbackQuery(CallbackQuery callbackQuery, String text, Boolean show_alert, Integer cache_time) {
 
 		try {
