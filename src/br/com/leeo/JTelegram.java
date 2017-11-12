@@ -59,6 +59,23 @@ public abstract class JTelegram {
 
 	public abstract void handle(Update update);
 
+	public void deleteMessage(CallbackQuery callbackQuery) {
+
+		try {
+
+			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://api.telegram.org/bot"
+					+ BOT_TOKEN + "/deleteMessage?chat_id=" + callbackQuery.getMessage().getChat().getId()
+					+ "&message_id=" + callbackQuery.getMessage().getMessage_id()).openConnection();
+
+			httpsURLConnection.setRequestMethod("GET");
+
+			httpsURLConnection.getResponseCode();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void editMessageReplyMarkup(CallbackQuery callbackQuery, ReplyMarkup reply_markup) {
 
 		try {
