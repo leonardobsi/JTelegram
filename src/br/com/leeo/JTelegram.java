@@ -114,14 +114,13 @@ public abstract class JTelegram {
 		}
 	}
 
-	public void answerCallbackQuery(CallbackQuery callbackQuery, String text, Boolean show_alert, Integer cache_time) {
+	public void answerCallbackQuery(CallbackQuery callbackQuery, String text, Boolean show_alert) {
 
 		try {
 
-			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(
-					"https://api.telegram.org/bot" + BOT_TOKEN + "/answerCallbackQuery?" + "callback_query_id="
-							+ callbackQuery.getId() + "&text=" + URLEncoder.encode(text, "UTF-8") + "&show_alert="
-							+ show_alert.booleanValue() + "&cache_time=" + cache_time.intValue()).openConnection();
+			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://api.telegram.org/bot"
+					+ BOT_TOKEN + "/answerCallbackQuery?" + "callback_query_id=" + callbackQuery.getId() + "&text="
+					+ URLEncoder.encode(text, "UTF-8") + "&show_alert=" + show_alert.booleanValue()).openConnection();
 
 			httpsURLConnection.setRequestMethod("GET");
 
