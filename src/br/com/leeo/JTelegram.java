@@ -64,8 +64,7 @@ public abstract class JTelegram {
 		try {
 
 			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(
-					"https://api.telegram.org/bot<token>/deleteMessage?chat_id=p{chat_id}&message_id=p{message_id}"
-							.replace("<token>", BOT_TOKEN)
+					"https://api.telegram.org/bot<token>/deleteMessage?chat_id=p{chat_id}&message_id=p{message_id}".replace("<token>", BOT_TOKEN)
 							.replace("p{chat_id}", callbackQuery.getMessage().getChat().getId())
 							.replace("p{message_id}", callbackQuery.getMessage().getMessage_id())).openConnection();
 
@@ -84,11 +83,9 @@ public abstract class JTelegram {
 
 			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(
 					"https://api.telegram.org/bot<token>/editMessageReplyMarkup?chat_id=p{chat_id}&message_id=p{message_id}&reply_markup=p{reply_markup}"
-							.replace("<token>", BOT_TOKEN)
-							.replace("p{chat_id}", callbackQuery.getMessage().getChat().getId())
+							.replace("<token>", BOT_TOKEN).replace("p{chat_id}", callbackQuery.getMessage().getChat().getId())
 							.replace("p{message_id}", callbackQuery.getMessage().getMessage_id())
-							.replace("p{reply_markup}", URLEncoder.encode(new Gson().toJson(reply_markup), "UTF-8")))
-									.openConnection();
+							.replace("p{reply_markup}", URLEncoder.encode(new Gson().toJson(reply_markup), "UTF-8"))).openConnection();
 
 			httpsURLConnection.setRequestMethod("GET");
 
@@ -99,19 +96,18 @@ public abstract class JTelegram {
 		}
 	}
 
-	public void editMessageText(CallbackQuery callbackQuery, String text, ParseMode parse_mode,
-			ReplyMarkup reply_markup) {
+	public void editMessageText(CallbackQuery callbackQuery, String text, ParseMode parse_mode, ReplyMarkup reply_markup) {
 
 		try {
 
-			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://api.telegram.org/bot"
-					+ BOT_TOKEN + "/editMessageText?chat_id=" + callbackQuery.getMessage().getChat().getId()
-					+ "&message_id=" + callbackQuery.getMessage().getMessage_id() + "&text="
-					+ URLEncoder.encode(text, "UTF-8") + "&parse_mode=" + parse_mode + "&reply_markup="
-					+ URLEncoder.encode(new Gson().toJson(reply_markup), "UTF-8")).openConnection();
+			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(
+					"https://api.telegram.org/bot<token>/editMessageText?chat_id=p{chat_id}&message_id=p{message_id}&text=p{text}&parse_mode=p{parse_mode}&reply_markup=p{reply_markup}"
+							.replace("<token>", BOT_TOKEN).replace("p{chat_id}", callbackQuery.getMessage().getChat().getId())
+							.replace("p{message_id}", callbackQuery.getMessage().getMessage_id())
+							.replace("p{text}", URLEncoder.encode(text, "UTF-8")).replace("p{parse_mode}", parse_mode.toString())
+							.replace("p{reply_markup}", URLEncoder.encode(new Gson().toJson(reply_markup), "UTF-8"))).openConnection();
 
 			httpsURLConnection.setRequestMethod("GET");
-
 			httpsURLConnection.getResponseCode();
 
 		} catch (Exception e) {
@@ -123,12 +119,12 @@ public abstract class JTelegram {
 
 		try {
 
-			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://api.telegram.org/bot"
-					+ BOT_TOKEN + "/answerCallbackQuery?" + "callback_query_id=" + callbackQuery.getId() + "&text="
-					+ URLEncoder.encode(text, "UTF-8") + "&show_alert=" + show_alert.booleanValue()).openConnection();
+			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(
+					"https://api.telegram.org/bot<token>/answerCallbackQuery?callback_query_id=p{callback_query_id}&text=p{text}&show_alert=p{show_alert}"
+							.replace("<token>", BOT_TOKEN).replace("p{callback_query_id}", callbackQuery.getId())
+							.replace("p{show_alert}", show_alert.toString()).replace("p{text}", URLEncoder.encode(text, "UTF-8"))).openConnection();
 
 			httpsURLConnection.setRequestMethod("GET");
-
 			httpsURLConnection.getResponseCode();
 
 		} catch (Exception e) {
@@ -140,8 +136,8 @@ public abstract class JTelegram {
 
 		try {
 
-			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(
-					"https://api.telegram.org/bot" + BOT_TOKEN + "/getUpdates?offset=" + offset).openConnection();
+			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://api.telegram.org/bot<token>/getUpdates?offset=p{offset}"
+					.replace("<token>", BOT_TOKEN).replace("p{offset}", Long.toString(offset))).openConnection();
 
 			httpsURLConnection.setRequestMethod("GET");
 			httpsURLConnection.setDoOutput(true);
@@ -149,8 +145,7 @@ public abstract class JTelegram {
 			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(httpsURLConnection.getOutputStream());
 			outputStreamWriter.flush();
 
-			JsonElement jsonElement = new JsonParser()
-					.parse(new InputStreamReader(httpsURLConnection.getInputStream()));
+			JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(httpsURLConnection.getInputStream()));
 
 			Updates updates = new Gson().fromJson(jsonElement, Updates.class);
 
@@ -171,24 +166,13 @@ public abstract class JTelegram {
 	 * @throws MalformedURLException
 	 * 
 	 */
-	public void sendMessage(String chat_id, String text, ParseMode parse_mode, ReplyMarkup reply_markup)
-			throws Exception {
+	public void sendMessage(String chat_id, String text, ParseMode parse_mode, ReplyMarkup reply_markup) throws Exception {
 
-		HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://api.telegram.org/bot" + BOT_TOKEN
-				+ "/sendMessage?reply_markup=" + URLEncoder.encode(new Gson().toJson(reply_markup), "UTF-8")
-				+ "&parse_mode=" + parse_mode + "&chat_id=" + chat_id + "&text=" + URLEncoder.encode(text, "UTF-8"))
-						.openConnection();
-
-		httpsURLConnection.setRequestMethod("GET");
-
-		httpsURLConnection.getResponseCode();
-	}
-
-	public void setChatDescription(String chat_id, String description) throws Exception {
-
-		HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://api.telegram.org/bot" + BOT_TOKEN
-				+ "/setChatDescription?chat_id=" + chat_id + "&description=" + URLEncoder.encode(description, "UTF-8"))
-						.openConnection();
+		HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(
+				"https://api.telegram.org/bot<token>/sendMessage?chat_id=p{chat_id}&parse_mode=p{parse_mode}&text=p{text}&reply_markup=p{reply_markup}"
+						.replace("<token>", BOT_TOKEN).replace("p{chat_id}", chat_id).replace("p{parse_mode}", parse_mode.toString())
+						.replace("p{text}", URLEncoder.encode(text, "UTF-8"))
+						.replace("p{reply_markup}", URLEncoder.encode(new Gson().toJson(reply_markup), "UTF-8"))).openConnection();
 
 		httpsURLConnection.setRequestMethod("GET");
 
@@ -198,35 +182,34 @@ public abstract class JTelegram {
 	public void answerPreCheckoutQuery(PreCheckoutQuery pre_checkout_query, Boolean ok) throws Exception {
 
 		HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(
-				"https://api.telegram.org/bot" + BOT_TOKEN + "/answerPreCheckoutQuery?pre_checkout_query_id="
-						+ pre_checkout_query.getId() + "&ok=" + ok.booleanValue()).openConnection();
+				"https://api.telegram.org/bot<token>/answerPreCheckoutQuery?pre_checkout_query_id=p{pre_checkout_query_id}&ok=p{ok}"
+						.replace("<token>", BOT_TOKEN).replace("p{pre_checkout_query_id}", pre_checkout_query.getId())
+						.replace("p{ok}", ok.toString())).openConnection();
 
 		httpsURLConnection.setRequestMethod("GET");
-
 		httpsURLConnection.getResponseCode();
 	}
 
-	public void sendInvoice(String chat_id, String title, String description, String payload, String provider_token,
-			String start_parameter, Currency currency, List<LabeledPrice> prices, URL photo_url) throws Exception {
+	public void sendInvoice(String chat_id, String title, String description, String payload, String provider_token, String start_parameter,
+			Currency currency, List<LabeledPrice> prices, URL photo_url) throws Exception {
 
-		HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://api.telegram.org/bot" + BOT_TOKEN
-				+ "/sendInvoice" + "?chat_id=" + chat_id + "&title=" + title + "&photo_url="
-				+ URLEncoder.encode(photo_url.toString(), "UTF-8") + "&description=" + description + "&payload="
-				+ payload + "&provider_token=" + provider_token + "&start_parameter=" + start_parameter + "&currency="
-				+ currency + "&prices=" + (new Gson().toJson(prices))).openConnection();
+		HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(
+				"https://api.telegram.org/bot<token>/sendInvoice?chat_id=p{chat_id}&title=p{title}&photo_url=p{photo_url}&description=p{description}&payload=p{payload}&provider_token=p{provider_token}&start_parameter=p{start_parameter}&currency=p{currency}&prices=p{prices}"
+						.replace("<token>", BOT_TOKEN).replace("p{title}", title).replace("p{chat_id}", chat_id)
+						.replace("p{photo_url}", URLEncoder.encode(photo_url.toString(), "UTF-8")).replace("p{description}", description)
+						.replace("p{payload}", payload).replace("p{provider_token}", provider_token).replace("p{start_parameter}", start_parameter)
+						.replace("p{currency}", currency.toString()).replace("p{prices}", new Gson().toJson(prices))).openConnection();
 
 		httpsURLConnection.setRequestMethod("GET");
-
 		httpsURLConnection.getResponseCode();
 	}
 
 	public void sendPhoto(String chat_id, URL photo, ReplyMarkup reply_markup) throws Exception {
 
 		HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(
-				"https://api.telegram.org/bot" + BOT_TOKEN + "/sendPhoto?chat_id=" + chat_id
-						+ "&disable_notification=true&photo=" + URLEncoder.encode(photo.toString(), "UTF-8")
-						+ "&reply_markup=" + URLEncoder.encode(new Gson().toJson(reply_markup), "UTF-8"))
-								.openConnection();
+				"https://api.telegram.org/bot<token>/sendPhoto?chat_id=p{chat_id}&disable_notification=true&photo=p{photo}&reply_markup=p{reply_markup}"
+						.replace("<token>", BOT_TOKEN).replace("p{photo}", URLEncoder.encode(photo.toString(), "UTF-8"))
+						.replace("p{reply_markup}", URLEncoder.encode(new Gson().toJson(reply_markup), "UTF-8"))).openConnection();
 
 		httpsURLConnection.setRequestMethod("GET");
 
