@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Message {
 
-	private Integer message_id;
+	private String message_id;
 	private String text;
 	private Chat chat;
 	private List<MessageEntity> entities;
@@ -15,11 +15,11 @@ public class Message {
 	private Location location;
 	private Contact contact;
 
-	public Integer getMessage_id() {
+	public String getMessage_id() {
 		return message_id;
 	}
 
-	public void setMessage_id(Integer message_id) {
+	public void setMessage_id(String message_id) {
 		this.message_id = message_id;
 	}
 

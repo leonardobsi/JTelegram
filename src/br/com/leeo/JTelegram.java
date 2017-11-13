@@ -63,9 +63,11 @@ public abstract class JTelegram {
 
 		try {
 
-			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://api.telegram.org/bot"
-					+ BOT_TOKEN + "/deleteMessage?chat_id=" + callbackQuery.getMessage().getChat().getId()
-					+ "&message_id=" + callbackQuery.getMessage().getMessage_id()).openConnection();
+			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(
+					"https://api.telegram.org/bot<token>/deleteMessage?chat_id=p{chat_id}&message_id=p{message_id}"
+							.replace("<token>", BOT_TOKEN)
+							.replace("p{chat_id}", callbackQuery.getMessage().getChat().getId())
+							.replace("p{message_id}", callbackQuery.getMessage().getMessage_id())).openConnection();
 
 			httpsURLConnection.setRequestMethod("GET");
 
@@ -80,10 +82,13 @@ public abstract class JTelegram {
 
 		try {
 
-			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://api.telegram.org/bot"
-					+ BOT_TOKEN + "/editMessageReplyMarkup?chat_id=" + callbackQuery.getMessage().getChat().getId()
-					+ "&message_id=" + callbackQuery.getMessage().getMessage_id() + "&reply_markup="
-					+ URLEncoder.encode(new Gson().toJson(reply_markup), "UTF-8")).openConnection();
+			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(
+					"https://api.telegram.org/bot<token>/editMessageReplyMarkup?chat_id=p{chat_id}&message_id=p{message_id}&reply_markup=p{reply_markup}"
+							.replace("<token>", BOT_TOKEN)
+							.replace("p{chat_id}", callbackQuery.getMessage().getChat().getId())
+							.replace("p{message_id}", callbackQuery.getMessage().getMessage_id())
+							.replace("p{reply_markup}", URLEncoder.encode(new Gson().toJson(reply_markup), "UTF-8")))
+									.openConnection();
 
 			httpsURLConnection.setRequestMethod("GET");
 
