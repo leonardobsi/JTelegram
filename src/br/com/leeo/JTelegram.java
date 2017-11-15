@@ -19,6 +19,18 @@ import br.com.leeo.jtelegram.Update;
 
 public abstract class JTelegram {
 
+	/*
+	 * public class Webhook extends HttpServlet {
+	 * 
+	 * @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	 * 
+	 * JsonElement jsonElement= new JsonParser().parse(req.getReader());
+	 * 
+	 * Update update= new Gson().fromJson(jsonElement, Update.class);
+	 * 
+	 * } }
+	 */
+
 	public enum ParseMode {
 		Markdown, HTML;
 	}
@@ -175,13 +187,13 @@ public abstract class JTelegram {
 	public void answerPreCheckoutQuery(PreCheckoutQuery pre_checkout_query, Boolean ok) {
 
 		try {
-			
+
 			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://api.telegram.org/bot<token>/answerPreCheckoutQuery?pre_checkout_query_id=p{pre_checkout_query_id}&ok=p{ok}"
 					.replace("<token>", BOT_TOKEN).replace("p{pre_checkout_query_id}", pre_checkout_query.getId()).replace("p{ok}", ok.toString())).openConnection();
 
 			httpsURLConnection.setRequestMethod("GET");
 			httpsURLConnection.getResponseCode();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -191,7 +203,7 @@ public abstract class JTelegram {
 			URL photo_url) {
 
 		try {
-			
+
 			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(
 					"https://api.telegram.org/bot<token>/sendInvoice?chat_id=p{chat_id}&title=p{title}&photo_url=p{photo_url}&description=p{description}&payload=p{payload}&provider_token=p{provider_token}&start_parameter=p{start_parameter}&currency=p{currency}&prices=p{prices}"
 							.replace("<token>", BOT_TOKEN).replace("p{title}", title).replace("p{chat_id}", chat_id).replace("p{photo_url}", URLEncoder.encode(photo_url.toString(), "UTF-8"))
@@ -209,7 +221,7 @@ public abstract class JTelegram {
 	public void sendPhoto(String chat_id, URL photo, ReplyMarkup reply_markup) {
 
 		try {
-			
+
 			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(
 					"https://api.telegram.org/bot<token>/sendPhoto?chat_id=p{chat_id}&disable_notification=true&photo=p{photo}&reply_markup=p{reply_markup}".replace("<token>", BOT_TOKEN)
 							.replace("p{photo}", URLEncoder.encode(photo.toString(), "UTF-8")).replace("p{reply_markup}", URLEncoder.encode(new Gson().toJson(reply_markup), "UTF-8")))
@@ -218,7 +230,7 @@ public abstract class JTelegram {
 			httpsURLConnection.setRequestMethod("GET");
 
 			httpsURLConnection.getResponseCode();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
