@@ -22,7 +22,8 @@ public abstract class JTelegram {
 	/*
 	 * public class Webhook extends HttpServlet {
 	 * 
-	 * @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	 * @Override protected void doPost(HttpServletRequest req, HttpServletResponse
+	 * resp) throws ServletException, IOException {
 	 * 
 	 * JsonElement jsonElement= new JsonParser().parse(req.getReader());
 	 * 
@@ -224,8 +225,8 @@ public abstract class JTelegram {
 
 			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(
 					"https://api.telegram.org/bot<token>/sendPhoto?chat_id=p{chat_id}&disable_notification=true&photo=p{photo}&reply_markup=p{reply_markup}".replace("<token>", BOT_TOKEN)
-							.replace("p{photo}", URLEncoder.encode(photo.toString(), "UTF-8")).replace("p{reply_markup}", URLEncoder.encode(new Gson().toJson(reply_markup), "UTF-8")))
-									.openConnection();
+							.replace("p{chat_id}", chat_id).replace("p{photo}", URLEncoder.encode(photo.toString(), "UTF-8"))
+							.replace("p{reply_markup}", URLEncoder.encode(new Gson().toJson(reply_markup), "UTF-8"))).openConnection();
 
 			httpsURLConnection.setRequestMethod("GET");
 
