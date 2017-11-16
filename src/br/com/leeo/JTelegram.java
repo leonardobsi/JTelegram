@@ -13,7 +13,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import br.com.leeo.jtelegram.CallbackQuery;
+import br.com.leeo.jtelegram.Contact;
 import br.com.leeo.jtelegram.LabeledPrice;
+import br.com.leeo.jtelegram.Message;
 import br.com.leeo.jtelegram.PreCheckoutQuery;
 import br.com.leeo.jtelegram.Update;
 
@@ -104,13 +106,13 @@ public abstract class JTelegram {
 		}
 	}
 
-	public void editMessageText(CallbackQuery callbackQuery, String text, ParseMode parse_mode, ReplyMarkup reply_markup) {
+	public void editMessageText(Message message, String text, ParseMode parse_mode, ReplyMarkup reply_markup) {
 
 		try {
 
 			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(
 					"https://api.telegram.org/bot<token>/editMessageText?chat_id=p{chat_id}&message_id=p{message_id}&text=p{text}&parse_mode=p{parse_mode}&reply_markup=p{reply_markup}"
-							.replace("<token>", BOT_TOKEN).replace("p{chat_id}", callbackQuery.getMessage().getChat().getId()).replace("p{message_id}", callbackQuery.getMessage().getMessage_id())
+							.replace("<token>", BOT_TOKEN).replace("p{chat_id}", message.getChat().getId()).replace("p{message_id}", message.getMessage_id())
 							.replace("p{text}", URLEncoder.encode(text, "UTF-8")).replace("p{parse_mode}", parse_mode.toString())
 							.replace("p{reply_markup}", URLEncoder.encode(new Gson().toJson(reply_markup), "UTF-8"))).openConnection();
 
@@ -164,10 +166,10 @@ public abstract class JTelegram {
 		return null;
 	}
 
-	public void sendMessage(String chat_id, String text, ParseMode parse_mode, ReplyMarkup reply_markup) {
+	public Message sendMessage(String chat_id, String text, ParseMode parse_mode, ReplyMarkup reply_markup) {
 
 		try {
-
+			
 			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://api.telegram.org/bot<token>/sendMessage".replace("<token>", BOT_TOKEN)).openConnection();
 
 			httpsURLConnection.setRequestMethod("POST");
@@ -178,11 +180,15 @@ public abstract class JTelegram {
 					.write("chat_id=p{chat_id}&parse_mode=p{parse_mode}&text=p{text}&reply_markup=p{reply_markup}".replace("p{chat_id}", chat_id).replace("p{parse_mode}", parse_mode.toString())
 							.replace("p{text}", URLEncoder.encode(text, "UTF-8")).replace("p{reply_markup}", URLEncoder.encode(new Gson().toJson(reply_markup), "UTF-8")).getBytes());
 
-			httpsURLConnection.getResponseCode();
+			JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(httpsURLConnection.getInputStream()));
 
+			return new Gson().fromJson(jsonElement.getAsJsonObject().get("result").getAsJsonObject(), Message.class);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		return null;
 	}
 
 	public void answerPreCheckoutQuery(PreCheckoutQuery pre_checkout_query, Boolean ok) {
@@ -191,6 +197,21 @@ public abstract class JTelegram {
 
 			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://api.telegram.org/bot<token>/answerPreCheckoutQuery?pre_checkout_query_id=p{pre_checkout_query_id}&ok=p{ok}"
 					.replace("<token>", BOT_TOKEN).replace("p{pre_checkout_query_id}", pre_checkout_query.getId()).replace("p{ok}", ok.toString())).openConnection();
+
+			httpsURLConnection.setRequestMethod("GET");
+			httpsURLConnection.getResponseCode();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendContact(String chat_id, Contact contact ) {
+
+		try {
+
+			HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL("https://api.telegram.org/bot<token>/sendContact?chat_id=p{chat_id}&phone_number=p{phone_number}&first_name=p{first_name}"
+					.replace("<token>", BOT_TOKEN).replace("p{chat_id}", chat_id ).replace("p{phone_number}", contact.getPhone_number()).replace("p{first_name}", contact.getFirst_name())).openConnection();
 
 			httpsURLConnection.setRequestMethod("GET");
 			httpsURLConnection.getResponseCode();
