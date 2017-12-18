@@ -14,6 +14,7 @@ public class Message {
 	private SuccessfulPayment successful_payment;
 	private Location location;
 	private Contact contact;
+	private List<PhotoSize> photo;
 
 	public String getMessage_id() {
 		return message_id;
@@ -93,6 +94,14 @@ public class Message {
 
 	public void setContact(Contact contact) {
 		this.contact = contact;
+	}
+
+	public List<PhotoSize> getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(List<PhotoSize> photo) {
+		this.photo = photo;
 	}
 
 }
